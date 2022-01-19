@@ -1,6 +1,7 @@
 import config from '$lib/config';
 import { Client } from '@notionhq/client';
 import ical from 'ical-generator';
+import { getVtimezoneComponent } from '@touch4it/ical-timezones';
 import type { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
 import type { RequestHandler } from '@sveltejs/kit';
 
@@ -33,7 +34,7 @@ export const get: RequestHandler = async ({ params, url }) => {
 
 	const filtered: {
 		title: string;
-		date: { start: string; end: string | null; time_song: string | null };
+		date: { start: string; end: string | null; time_zone: string | null };
 	}[] = databaseEntries.flatMap((object) => {
 		if (object.properties[config.dateProperty].date === null) {
 			return [];
@@ -48,15 +49,20 @@ export const get: RequestHandler = async ({ params, url }) => {
 
 	const calendar = ical({
 		name: databaseMetadata.title[0].text.content,
-		prodId: { company: 'Tomi Chen', language: 'EN', product: 'notion-ics' }
+		prodId: { company: 'Tomi Chen', language: 'EN', product: 'notion-ics' },
+		timezone: {
+			name: 'TZGEN',
+			generator: getVtimezoneComponent
+		}
 	});
 	filtered.forEach((event) => {
 		calendar.createEvent({
 			start: event.date.start,
 			end: event.date.end,
-			timezone: config.timezone,
+			timezone: event.date.time_zone || config.timezone,
 			allDay: true,
-			summary: event.title
+			summary: event.title,
+			busystatus: config.busy
 		});
 	});
 
