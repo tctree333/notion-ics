@@ -59,7 +59,7 @@ export const get: RequestHandler = async ({ params, url }) => {
 		calendar.createEvent({
 			start: event.date.start,
 			end: event.date.end,
-			timezone: event.date.time_zone || config.timezone,
+			timezone: 'UTC',
 			allDay: true,
 			summary: event.title,
 			busystatus: config.busy

@@ -10,12 +10,10 @@ export default {
 	},
 	dateProperty: 'Scheduled',
 	titleProperty: 'Name',
-	timezone: 'America/Los_Angeles',
 	busy: ICalEventBusyStatus.FREE
 } as {
 	filter: Readonly<QueryDatabaseParameters['filter']>;
 	dateProperty: Readonly<string>;
 	titleProperty: Readonly<string>;
-	timezone: Readonly<string>;
 	busy: Readonly<ICalEventBusyStatus>;
 };
