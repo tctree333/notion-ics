@@ -1,7 +1,3 @@
-<script context="module" lang="ts">
-	export const prerender = true;
-</script>
-
 <main>
 	<h1>Notion ICS</h1>
 	<p>

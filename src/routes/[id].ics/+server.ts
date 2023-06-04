@@ -1,15 +1,19 @@
-import config from '$lib/config';
-import { Client } from '@notionhq/client';
 import ical from 'ical-generator';
+import { Client } from '@notionhq/client';
 import type { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
-import type { RequestHandler } from '@sveltejs/kit';
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
+import config from '$lib/config';
+import { ACCESS_KEY, NOTION_TOKEN } from '$env/static/private';
+import type { RequestHandler } from './$types';
 
-export const get: RequestHandler = async ({ params, url }) => {
+export const trailingSlash = 'never';
+
+const notion = new Client({ auth: NOTION_TOKEN });
+
+export const GET: RequestHandler = async ({ params, url }) => {
 	const secret = url.searchParams.get('secret');
-	if (secret !== process.env.ACCESS_KEY) {
-		return { status: 403, body: 'Forbidden' };
+	if (secret !== ACCESS_KEY) {
+		return new Response('Forbidden', { status: 403 });
 	}
 
 	const { id } = params;
@@ -60,11 +64,10 @@ export const get: RequestHandler = async ({ params, url }) => {
 		});
 	});
 
-	return {
+	return new Response(calendar.toString(), {
 		status: 200,
-		body: calendar.toString(),
 		headers: {
 			'content-type': 'text/calendar'
 		}
-	};
+	});
 };
