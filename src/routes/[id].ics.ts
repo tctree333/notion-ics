@@ -1,7 +1,6 @@
 import config from '$lib/config';
 import { Client } from '@notionhq/client';
 import ical from 'ical-generator';
-import { getVtimezoneComponent } from '@touch4it/ical-timezones';
 import type { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
 import type { RequestHandler } from '@sveltejs/kit';
 
@@ -49,17 +48,12 @@ export const get: RequestHandler = async ({ params, url }) => {
 
 	const calendar = ical({
 		name: databaseMetadata.title[0].text.content,
-		prodId: { company: 'Tomi Chen', language: 'EN', product: 'notion-ics' },
-		timezone: {
-			name: 'TZGEN',
-			generator: getVtimezoneComponent
-		}
+		prodId: { company: 'Tomi Chen', language: 'EN', product: 'notion-ics' }
 	});
 	filtered.forEach((event) => {
 		calendar.createEvent({
 			start: event.date.start,
 			end: event.date.end,
-			timezone: 'UTC',
 			allDay: true,
 			summary: event.title,
 			busystatus: config.busy
