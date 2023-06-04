@@ -56,8 +56,8 @@ export const GET: RequestHandler = async ({ params, url }) => {
 	});
 	filtered.forEach((event) => {
 		calendar.createEvent({
-			start: event.date.start,
-			end: event.date.end,
+			start: new Date(event.date.start),
+			end: new Date(Date.parse(event.date.end) + 86400000), // end date is exclusive, so add 1 day
 			allDay: true,
 			summary: event.title,
 			busystatus: config.busy
