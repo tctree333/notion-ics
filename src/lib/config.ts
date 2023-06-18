@@ -5,7 +5,8 @@ export default {
 	filter: {
 		and: [
 			{ property: 'Status', select: { does_not_equal: 'Completed' } },
-			{ property: 'Status', select: { does_not_equal: 'Nope' } }
+			{ property: 'Status', select: { does_not_equal: 'Nope' } },
+			{ property: 'Type', select: { equals: 'Task' } }
 		]
 	},
 	dateProperty: 'Scheduled',
