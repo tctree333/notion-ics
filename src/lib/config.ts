@@ -1,11 +1,11 @@
 import { ICalEventBusyStatus } from 'ical-generator';
-import type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints';
+import type { QueryDataSourceParameters } from '@notionhq/client/build/src/api-endpoints';
 
 export default {
 	filter: {
 		and: [
-			{ property: 'Status', select: { does_not_equal: 'Completed' } },
-			{ property: 'Status', select: { does_not_equal: 'Nope' } },
+			{ property: 'Status', status: { does_not_equal: 'Completed' } },
+			{ property: 'Status', status: { does_not_equal: 'Nope' } },
 			{ property: 'Type', select: { equals: 'Task' } }
 		]
 	},
@@ -13,7 +13,7 @@ export default {
 	titleProperty: 'Name',
 	busy: ICalEventBusyStatus.FREE
 } as {
-	filter: Readonly<QueryDatabaseParameters['filter']>;
+	filter: Readonly<QueryDataSourceParameters['filter']>;
 	dateProperty: Readonly<string>;
 	titleProperty: Readonly<string>;
 	busy: Readonly<ICalEventBusyStatus>;
